@@ -1,0 +1,25 @@
+# Caddy reverse proxy for the Arnon relay.
+# Caddy obtains and renews TLS certificates automatically (Let's Encrypt).
+# The relay itself stays plain ws on localhost; Caddy adds wss + a trustworthy
+# client IP via X-Forwarded-For (last hop), which the relay trusts because it
+# runs with TRUST_PROXY=1.
+
+relay.arnon.app {
+	# WebSocket endpoint the client connects to: wss://relay.arnon.app/ws
+	reverse_proxy /ws localhost:9444
+
+	# Caddy sets X-Forwarded-For automatically. The relay reads the LAST hop.
+	# Nothing else is exposed.
+
+	# Minimal, privacy-preserving logging: disable access logs entirely so no
+	# IPs or timestamps are written to disk by the proxy either.
+	log {
+		output discard
+	}
+
+	header {
+		# basic hardening for the endpoint
+		-Server
+		Strict-Transport-Security "max-age=31536000"
+	}
+}
