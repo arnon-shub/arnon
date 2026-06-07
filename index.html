@@ -19,6 +19,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro',sans-serif;background
 a{color:#eee;text-decoration:none}
 a:focus-visible{outline:2px solid #eee;outline-offset:2px}
 .hero-btn:focus-visible{outline:2px solid #eee;outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 .hero{text-align:center;padding:100px 24px 80px}
 .hero-logo{font-size:clamp(64px,15vw,96px);font-weight:800;letter-spacing:-3px;color:#eee}
@@ -34,7 +35,7 @@ a:focus-visible{outline:2px solid #eee;outline-offset:2px}
 .demo-flow{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
 .demo-step{text-align:center;padding:16px}
 .demo-num{width:40px;height:40px;border-radius:50%;background:#1a1a1a;border:1px solid #333;display:inline-flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#eee;margin-bottom:10px}
-.demo-step h4{font-size:14px;margin-bottom:4px}
+.demo-step h3{font-size:14px;margin-bottom:4px}
 .demo-step p{font-size:12px;color:#888}
 .demo-arrow{font-size:20px;color:#333}
 
@@ -53,7 +54,7 @@ a:focus-visible{outline:2px solid #eee;outline-offset:2px}
 
 .trust-note{max-width:640px;margin:0 auto;padding:8px 24px 56px}
 .trust-note .box{background:#0f0f0f;border:1px solid #1f1f1f;border-radius:12px;padding:24px}
-.trust-note h3{font-size:15px;font-weight:600;color:#ddd;margin-bottom:10px}
+.trust-note h2{font-size:15px;font-weight:600;color:#ddd;margin-bottom:10px}
 .trust-note p{color:#999;font-size:14px;line-height:1.7;margin-bottom:10px}
 .trust-note p:last-child{margin-bottom:0}
 
@@ -70,30 +71,30 @@ footer a{color:#aaa}footer a:hover{color:#fff}
   body{background:#fff;color:#111}
   a{color:#111}
   .hero-logo{color:#111}
-  .hero-tag{color:#777}.hero-desc{color:#555}
+  .hero-tag{color:#666}.hero-desc{color:#555}
   .hero-btn{background:#111;color:#fff}
   .hero-btn:hover{background:#333}
   .demo-box{background:#f8f8f8;border-color:#eee}
   .demo-num{background:#f0f0f0;border-color:#ddd;color:#111}
   .demo-arrow{color:#ccc}
-  .demo-step p{color:#777}
+  .demo-step p{color:#666}
   .divider{background:#eee}
   .feature{border-color:#ddd}.feature h3{color:#222}.feature p{color:#666}
-  .comp-table th{color:#777;border-color:#eee}.comp-table th[scope="row"]{color:#444}.comp-table td{border-color:#f5f5f5;color:#444}
+  .comp-table th{color:#666;border-color:#eee}.comp-table th[scope="row"]{color:#444}.comp-table td{border-color:#f5f5f5;color:#444}.comp-table .yes{color:#1a7f37}.comp-table .no{color:#c1121f}.comp-table .maybe{color:#9a6700}
   .trust-note .box{background:#f8f8f8;border-color:#eee}
   .trust-note h3{color:#222}.trust-note p{color:#666}
   .hero-note{color:#666}
   .hero-note a{color:#111}
   a:focus-visible{outline-color:#111}
   .hero-btn:focus-visible{outline-color:#111}
-  footer{border-color:#eee;color:#888}footer a{color:#555}footer a:hover{color:#111}
+  footer{border-color:#eee;color:#666}footer a{color:#555}footer a:hover{color:#111}
 }
 </style>
 </head>
 <body>
 
 <section class="hero">
-  <div class="hero-logo">arnon</div>
+  <h1 class="hero-logo">arnon</h1>
   <div class="hero-tag">You are none.</div>
   <p class="hero-desc">
     Send a link. Exchange encrypted texts and voice notes. Close the tab — gone.
@@ -105,29 +106,30 @@ footer a{color:#aaa}footer a:hover{color:#fff}
 </section>
 
 <div class="demo" id="how">
+  <h2 class="sr-only">How it works</h2>
   <div class="demo-box">
     <div class="demo-flow">
       <div class="demo-step">
         <div class="demo-num">1</div>
-        <h4>Start</h4>
+        <h3>Start</h3>
         <p>Tap "New conversation"<br>Get a link</p>
       </div>
       <div class="demo-arrow" aria-hidden="true">→</div>
       <div class="demo-step">
         <div class="demo-num">2</div>
-        <h4>Share</h4>
+        <h3>Share</h3>
         <p>Send the link<br>by any channel</p>
       </div>
       <div class="demo-arrow" aria-hidden="true">→</div>
       <div class="demo-step">
         <div class="demo-num">3</div>
-        <h4>Chat</h4>
+        <h3>Chat</h3>
         <p>They open it<br>Instant encrypted chat</p>
       </div>
       <div class="demo-arrow" aria-hidden="true">→</div>
       <div class="demo-step">
         <div class="demo-num">4</div>
-        <h4>Gone</h4>
+        <h3>Gone</h3>
         <p>Close the tab<br>Zero trace</p>
       </div>
     </div>
@@ -136,7 +138,8 @@ footer a{color:#aaa}footer a:hover{color:#fff}
 
 <div class="divider"></div>
 
-<section class="features" aria-label="Features">
+<section class="features" aria-labelledby="features-h">
+  <h2 id="features-h" class="sr-only">Features</h2>
   <div class="feature">
     <h3>End-to-end encrypted</h3>
     <p>ECDH key exchange with AES-256-GCM. Every conversation generates fresh keys. A safety number lets both sides confirm no one is in the middle. Runs entirely in your browser via Web Crypto API.</p>
@@ -198,11 +201,11 @@ footer a{color:#aaa}footer a:hover{color:#fff}
 
 <div class="trust-note">
   <div class="box">
-    <h3>How to use Arnon, and what it protects</h3>
+    <h2>How to use Arnon, and what it protects</h2>
     <p>Arnon is built for conversations more private than WhatsApp or Telegram. Those platforms hold the conversation itself — your messages, voice notes, and who you talk to. Arnon holds none of it: the chat is end-to-end encrypted, nothing is stored, and nothing remains after you close the tab.</p>
     <p>One thing Arnon can't control: how you send the link. Sharing it over a normal channel (a text, WhatsApp, email) lets that channel see <em>that</em> a link was shared — but never the conversation. So the worst case is far better than chatting on those apps directly: they'd see everything; here they'd only see that two people exchanged a link. For a personal chat, send the link through your usual app, then hold the actual conversation in Arnon — not in the app you sent it through.</p>
     <p>The relay can never read your messages — they're encrypted end-to-end and the keys never leave the two browsers. It does see that two addresses are connected, when, and roughly how much. To hide that too, use <a href="https://www.torproject.org/download/" style="color:inherit;text-decoration:underline">Tor Browser</a>.</p>
-    <p style="color:#777">Honest limit: because the app loads fresh in your browser each time, you trust whoever serves it. Against an adversary who can compromise the server, DNS, or TLS and target you specifically, an installed, independently verified client (Signal, SimpleX) is stronger. Arnon is built for low-friction, identity-free privacy — not for surviving a targeted server compromise.</p>
+    <p style="color:#909090">Honest limit: because the app loads fresh in your browser each time, you trust whoever serves it. Against an adversary who can compromise the server, DNS, or TLS and target you specifically, an installed, independently verified client (Signal, SimpleX) is stronger. Arnon is built for low-friction, identity-free privacy — not for surviving a targeted server compromise.</p>
   </div>
 </div>
 

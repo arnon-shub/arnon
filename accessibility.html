@@ -20,13 +20,13 @@ h2{font-size:18px;font-weight:600;margin-top:32px;margin-bottom:8px}
 p{color:#aaa;font-size:15px;margin-bottom:16px}
 ul{color:#aaa;font-size:15px;margin:0 0 16px 24px;display:flex;flex-direction:column;gap:6px}
 .back{display:inline-block;margin-bottom:32px;font-size:14px;color:#999}
-.updated{font-size:13px;color:#777;margin-top:40px}
+.updated{font-size:13px;color:#8a8a8a;margin-top:40px}
 @media(prefers-color-scheme:light){
   body{background:#fff;color:#111}
   a{color:#111}
   p,ul{color:#555}
-  .back{color:#777}
-  .updated{color:#999}
+  .back{color:#666}
+  .updated{color:#666}
 }
 </style>
 </head>
@@ -38,12 +38,12 @@ ul{color:#aaa;font-size:15px;margin:0 0 16px 24px;display:flex;flex-direction:co
 <h2>What we've done</h2>
 <ul>
   <li>ARIA labels on interactive elements (buttons, inputs, dialogs)</li>
-  <li>Keyboard navigation with visible focus indicators</li>
-  <li>Live regions so screen readers announce new messages, status changes, and the self-destruct timer</li>
+  <li>Keyboard navigation with visible focus indicators; dialogs move focus inward, trap it, and close on Escape</li>
+  <li>Live regions so screen readers announce new messages and connection status, plus a one-time alert when a minute remains before self-destruct (the countdown itself is not announced every second)</li>
   <li>Semantic HTML — table headers, roles, and landmarks</li>
-  <li>Responsive design that works on all screen sizes</li>
+  <li>Responsive layout tested down to 320px-wide screens</li>
   <li>No zoom restrictions — users can scale freely</li>
-  <li>Color contrast aimed at the AA threshold for body text</li>
+  <li>Color contrast meets the WCAG AA 4.5:1 ratio for text, in both light and dark themes</li>
   <li>Light and dark mode on the landing page via system preference</li>
 </ul>
 <h2>Known limitations</h2>

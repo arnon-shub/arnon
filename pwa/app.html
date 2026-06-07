@@ -7,7 +7,7 @@
 <title>Arnon</title>
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src wss://relay.arnon.app; media-src blob:; font-src 'none'; img-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <style>
-:root{--bg:#0a0a0a;--sf:#161616;--bd:#2a2a2a;--t1:#eee;--t2:#aaa;--t3:#888;--bl:#3b82f6;--gn:#22c55e;--rd:#ef4444;--am:#f59e0b}
+:root{--bg:#0a0a0a;--sf:#161616;--bd:#2a2a2a;--t1:#eee;--t2:#aaa;--t3:#888;--bl:#2563eb;--blt:#3b82f6;--gn:#22c55e;--rd:#dc2626;--rdt:#f87171;--am:#f59e0b}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;font-size:16px}
@@ -39,7 +39,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 #link{align-items:center;justify-content:center;text-align:center;padding:32px;gap:16px}
 #link h2{font-size:24px;font-weight:600}
 #link .desc{font-size:16px;color:var(--t2);max-width:340px;line-height:1.6}
-.linkbox{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:16px;font-size:14px;color:var(--bl);word-break:break-all;max-width:400px;width:100%;font-family:monospace;text-align:left}
+.linkbox{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:16px;font-size:14px;color:var(--blt);word-break:break-all;max-width:400px;width:100%;font-family:monospace;text-align:left}
 .lbtns{display:flex;gap:10px;max-width:400px;width:100%}
 .lbtns button{flex:1;padding:16px;border-radius:12px;font-size:16px;font-weight:600}
 .lcopy{background:var(--t1);color:var(--bg)}
@@ -50,7 +50,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* CHAT */
 #chat{height:100%}
 .cht-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--bd);background:var(--sf);flex-shrink:0}
-.cht-hd h3{font-size:17px;font-weight:600}
+.cht-hd h2{font-size:17px;font-weight:600}
 .cht-st{font-size:13px;color:var(--t2);display:flex;align-items:center;gap:6px;margin-top:2px}
 .stdot{width:14px;height:14px;border-radius:50%;background:var(--gn);display:inline-flex;align-items:center;justify-content:center;font-size:10px;line-height:1;color:#0a0a0a;font-weight:700}.stdot.off{background:var(--rd)}.stdot::before{content:"\2713"}.stdot.off::before{content:"\2715"}
 .cht-right{display:flex;align-items:center;gap:12px}
@@ -67,10 +67,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .m.sys .sn{font-family:monospace;font-size:18px;letter-spacing:1px;display:inline-block;margin-top:6px;color:var(--t1)}
 .m audio{display:block;height:40px;width:240px;margin-top:4px}
 .m a{color:inherit;text-decoration:underline;text-underline-offset:2px;word-break:break-all}
-.m.r a{color:var(--bl)}.m.s a{color:#fff}
+.m.r a{color:var(--blt)}.m.s a{color:#fff}
 
 .inbar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid var(--bd);background:var(--sf);flex-shrink:0}
-.inbar input{flex:1;padding:14px 18px;background:var(--bg);border:1px solid var(--bd);border-radius:24px;color:var(--t1);font-size:16px;outline:none}
+.inbar input{flex:1;min-width:0;padding:14px 18px;background:var(--bg);border:1px solid var(--bd);border-radius:24px;color:var(--t1);font-size:16px;outline:none}
 .inbar input:focus{border-color:#666}
 .ibtn{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .bsend{background:var(--bl);color:#fff}
@@ -86,7 +86,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 #ended button{margin-top:20px;padding:16px 36px;background:var(--t1);color:var(--bg);border-radius:12px;font-size:16px;font-weight:600}
 
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--t1);color:var(--bg);padding:10px 24px;border-radius:50px;font-size:15px;font-weight:500;z-index:99;opacity:0;transition:opacity .25s;pointer-events:none}.toast.on{opacity:1}
-button:focus-visible,.hbtn:focus-visible,.ibtn:focus-visible,.bend:focus-visible{outline:2px solid var(--bl);outline-offset:2px}
+button:focus-visible,input:focus-visible,select:focus-visible,.hbtn:focus-visible,.ibtn:focus-visible,.bend:focus-visible{outline:2px solid var(--blt);outline-offset:2px}
 @media(max-width:500px){.m{max-width:85%}#home h1{font-size:38px}}
 @media(max-width:360px){.lbtns{flex-direction:column}}
 </style>
@@ -126,9 +126,9 @@ button:focus-visible,.hbtn:focus-visible,.ibtn:focus-visible,.bend:focus-visible
 
 <div id="chat" class="screen">
   <div class="cht-hd">
-    <div><h3>arnon</h3><div class="cht-st"><span class="stdot" id="stDot" role="img" aria-label="Connected"></span><span id="stTxt" role="status" aria-live="polite">Connected</span></div></div>
+    <div><h2>arnon</h2><div class="cht-st"><span class="stdot" id="stDot" aria-hidden="true"></span><span id="stTxt" role="status" aria-live="polite">Connected</span></div></div>
     <div class="cht-right">
-      <div class="timer" id="timerEl" role="timer" aria-live="polite" aria-label="Time until self-destruct"></div>
+      <div class="timer" id="timerEl" role="timer" aria-label="Time until self-destruct"></div>
       <button class="bend" aria-label="End conversation" onclick="endChat()">End</button>
     </div>
   </div>
@@ -247,7 +247,8 @@ function startTimer(seconds) {
   timerInterval = setInterval(function() {
     ttlRemaining--;
     el.textContent = fmtTime(Math.max(0, ttlRemaining));
-    if (ttlRemaining <= 60) el.style.color = 'var(--rd)';
+    if (ttlRemaining === 60) addMsg('One minute until self-destruct.', 'sys warn');
+    if (ttlRemaining <= 60) el.style.color = 'var(--rdt)';
     if (ttlRemaining <= 0) { clearInterval(timerInterval); selfDestruct(); }
   }, 1000);
 }
@@ -322,7 +323,7 @@ async function handle(m) {
         if (!/^audio\/(webm|ogg|mp4|mpeg|wav)(;.*)?$/.test(vmime)) vmime = 'audio/webm';
         var url = URL.createObjectURL(new Blob([buf], { type: vmime }));
         blobUrls.push(url);
-        addMsg('<audio controls src="' + url + '"></audio>', 'r');
+        addMsg('<audio controls aria-label="Voice note received" src="' + url + '"></audio>', 'r');
       } catch(err) { addMsg('Voice decryption failed.', 'sys'); }
       break;
     case 'bye':
@@ -351,13 +352,33 @@ async function sendPub() { wsend({ type: 'key', pub: await exportPub() }); }
 function setStatus(on) {
   var dot = document.getElementById('stDot');
   dot.className = 'stdot' + (on ? '' : ' off');
-  dot.setAttribute('aria-label', on ? 'Connected' : 'Disconnected');
   document.getElementById('stTxt').textContent = on ? 'Connected' : 'Disconnected';
 }
 
 // ── ACTIONS ──
-function showCreate() { document.getElementById('createModal').classList.add('on'); }
-function hideCreate() { document.getElementById('createModal').classList.remove('on'); }
+var lastFocus = null;
+function showCreate() {
+  lastFocus = document.activeElement;
+  var m = document.getElementById('createModal');
+  m.classList.add('on');
+  m.addEventListener('keydown', modalKeydown);
+  document.getElementById('ttlSelect').focus();
+}
+function hideCreate() {
+  var m = document.getElementById('createModal');
+  m.classList.remove('on');
+  m.removeEventListener('keydown', modalKeydown);
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+function modalKeydown(e) {
+  if (e.key === 'Escape') { hideCreate(); return; }
+  if (e.key !== 'Tab') return;
+  var f = document.getElementById('createModal').querySelectorAll('select,button');
+  if (!f.length) return;
+  var first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
 
 async function create() {
   var ttl = parseInt(document.getElementById('ttlSelect').value);
@@ -431,7 +452,7 @@ async function toggleRec() {
       var e = await encBuf(buf);
       wsend({ type: 'voice', iv: e.iv, ct: e.ct, mime: mime });
       var surl = URL.createObjectURL(blob); blobUrls.push(surl);
-      addMsg('<audio controls src="' + surl + '"></audio>', 's');
+      addMsg('<audio controls aria-label="Voice note you sent" src="' + surl + '"></audio>', 's');
     } catch (err) { toast('Send failed'); }
   };
   recorder.start();
