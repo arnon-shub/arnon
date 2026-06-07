@@ -22,7 +22,8 @@ const MSG_BURST = 20;               // token bucket size
 const MSG_REFILL = 10;              // tokens added per second
 const HEARTBEAT_MS = 30000;
 
-const wss = new WebSocketServer({ port: PORT, maxPayload: MAX_MSG_SIZE });
+// Bind to loopback only: Caddy (same host) reverse-proxies to it; never exposed to the public interface.
+const wss = new WebSocketServer({ host: '127.0.0.1', port: PORT, maxPayload: MAX_MSG_SIZE });
 console.log('[arnon-relay] :' + PORT + (TRUST_PROXY ? ' (trust-proxy)' : ''));
 
 function clientIp(req) {
