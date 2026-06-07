@@ -169,7 +169,7 @@ function fmtTime(s) { var m = Math.floor(s / 60), sec = s % 60; return m + ':' +
 // ── CRYPTO ──
 async function genKeys() { myKeys = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, false, ['deriveKey', 'deriveBits']); }
 async function exportPub() { var r = await crypto.subtle.exportKey('raw', myKeys.publicKey); return toB64(new Uint8Array(r)); }
-async function importPub(b64) { return crypto.subtle.importKey('raw', fromB64(b64), { name: 'ECDH', namedCurve: 'P-256' }, false, []); }
+async function importPub(b64) { return crypto.subtle.importKey('raw', fromB64(b64), { name: 'ECDH', namedCurve: 'P-256' }, true, []); } // extractable so computeSafetyNumber can re-export the peer key
 
 // Derive AES key via HKDF over the ECDH shared secret (domain separation).
 async function derive(pub) {
@@ -208,7 +208,7 @@ async function computeSafetyNumber() {
 
 async function showSafetyNumber() {
   var sn = await computeSafetyNumber();
-  addMsg('Safety number — read it aloud and compare with the other person. If both sides match, no one is in the middle.<br><span class="sn">' + sn + '</span>', 'sys');
+  addMsg('<strong>Safety number</strong> — before you share anything sensitive, compare this with the other person over a separate channel (a quick call or in person). If you both see the same number, no one is intercepting your chat. If the numbers do not match, stop — someone may be in the middle.<br><span class="sn">' + sn + '</span>', 'sys');
   addMsg('Until you compare it, this chat is encrypted but unverified.', 'sys warn');
 }
 
