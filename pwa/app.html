@@ -153,8 +153,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,.hbtn:focus-visibl
 var RELAY = 'wss://relay.arnon.app/ws';
 var BASE = 'https://arnon.app/pwa/app.html';
 var ws, room, myKeys, derivedKey, peerPub, connected = false, peerClosed = false;
-var ttlTotal = 0, ttlRemaining = 0, timerInterval = null;
-var pendingTtl = 0, roomCreatedAt = 0;
+var timerInterval = null;
+var ttlSeconds = 0, roomCreatedAt = 0, destructAt = 0, warned60 = false;
 var blobUrls = [];
 
 // ── UTIL ──
@@ -235,25 +235,49 @@ async function decBuf(iv64, ct64) {
   return await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromB64(iv64) }, derivedKey, fromB64(ct64));
 }
 
-// ── TIMER — only starts when both sides are connected ──
-function startTimer(seconds) {
-  if (seconds <= 0) return;
-  ttlTotal = seconds;
-  ttlRemaining = seconds;
-  var el = document.getElementById('timerEl');
-  el.textContent = fmtTime(ttlRemaining);
-  el.style.color = '';
+// ── TIMER — absolute-deadline based, so a throttled/backgrounded tab stays accurate ──
+// We never decrement a stored counter: setInterval is throttled (or frozen) while the
+// tab is hidden, which would stall the countdown and drift the two sides apart. Instead
+// we anchor an absolute destruct timestamp and recompute remaining = destructAt - now
+// on every tick, so the display self-corrects the instant the tab is focused again.
+function setDeadline(ttl, elapsed) {
+  ttlSeconds = ttl;
+  if (ttl <= 0) { destructAt = 0; return; }
+  // Anchor to THIS device's clock using the server-reported seconds-since-creation,
+  // so both peers show the same remaining time despite wall-clock skew between them.
+  roomCreatedAt = Date.now() - (elapsed || 0) * 1000;
+  destructAt = roomCreatedAt + ttl * 1000;
+}
+
+// only starts when both sides are connected; relies on the absolute destructAt above
+function startTimer() {
+  if (!destructAt) return;
   if (timerInterval) clearInterval(timerInterval);
-  timerInterval = setInterval(function() {
-    ttlRemaining--;
-    el.textContent = fmtTime(Math.max(0, ttlRemaining));
-    if (ttlRemaining === 60) addMsg('One minute until self-destruct.', 'sys warn');
-    if (ttlRemaining <= 60) el.style.color = 'var(--rdt)';
-    if (ttlRemaining <= 0) { clearInterval(timerInterval); selfDestruct(); }
-  }, 1000);
+  renderTimer();                                  // paint immediately, then once a second
+  timerInterval = setInterval(renderTimer, 1000);
+}
+
+function renderTimer() {
+  if (!destructAt) return;
+  var remaining = Math.round((destructAt - Date.now()) / 1000);
+  if (remaining <= 0) {                           // reached zero (or passed while backgrounded)
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    selfDestruct();
+    return;
+  }
+  var el = document.getElementById('timerEl');
+  el.textContent = fmtTime(remaining);
+  el.style.color = remaining <= 60 ? 'var(--rdt)' : '';
+  if (remaining <= 60 && !warned60) { warned60 = true; addMsg('One minute until self-destruct.', 'sys warn'); }
 }
 
 function selfDestruct() { destroy(); show('ended'); document.querySelector('#ended h2').textContent = 'Self-destructed'; }
+
+// A hidden tab throttles/freezes setInterval; recompute the moment it becomes visible
+// again so the timer jumps to the correct value (and self-destructs if already past).
+document.addEventListener('visibilitychange', function() {
+  if (!document.hidden && timerInterval) renderTimer();
+});
 
 // ── WEBSOCKET ──
 function connect(onOpen) {
@@ -277,24 +301,17 @@ async function handle(m) {
       document.getElementById('linkBox').textContent = BASE + '?r=' + room;
       if (m.ttl > 0) {
         document.getElementById('linkTtl').textContent = 'Self-destructs in ' + fmtTime(m.ttl);
-        pendingTtl = m.ttl;
-        roomCreatedAt = Date.now();
+        setDeadline(m.ttl, 0);
       }
       show('link');
       break;
     case 'joined':
-      if (m.ttl > 0) {
-        pendingTtl = m.ttl - (m.elapsed || 0);
-        roomCreatedAt = Date.now();
-      }
+      if (m.ttl > 0) setDeadline(m.ttl, m.elapsed || 0);
       addMsg('Connected. Exchanging keys...', 'sys');
       await sendPub();
       break;
     case 'peer_joined':
-      if (m.ttl > 0) {
-        pendingTtl = m.ttl - (m.elapsed || 0);
-        roomCreatedAt = Date.now();
-      }
+      if (m.ttl > 0) setDeadline(m.ttl, m.elapsed || 0);
       addMsg('Peer connected. Exchanging keys...', 'sys');
       await sendPub();
       break;
@@ -307,11 +324,7 @@ async function handle(m) {
       setStatus(true);
       addMsg('Encrypted connection established.', 'sys');
       await showSafetyNumber();
-      if (pendingTtl > 0) {
-        var elapsed = Math.floor((Date.now() - roomCreatedAt) / 1000);
-        var remaining = Math.max(1, pendingTtl - elapsed);
-        startTimer(remaining);
-      }
+      if (ttlSeconds > 0) startTimer();
       break;
     case 'msg':
       try { addMsg(linkify(escHtml(await dec(m.iv, m.ct))), 'r'); } catch(err) { addMsg('Decryption failed.', 'sys'); }
@@ -414,7 +427,7 @@ function destroy() {
   // tell the peer this is an intentional close (their UI can distinguish it
   // from a dropped connection) — best-effort, before we tear the socket down
   if (ws && ws.readyState === 1) { try { ws.send(JSON.stringify({ type: 'bye' })); } catch(e) {} }
-  connected = false; derivedKey = null; myKeys = null; peerPub = null; pendingTtl = 0; roomCreatedAt = 0;
+  connected = false; derivedKey = null; myKeys = null; peerPub = null; ttlSeconds = 0; roomCreatedAt = 0; destructAt = 0; warned60 = false;
   blobUrls.forEach(function(u) { try { URL.revokeObjectURL(u); } catch(e) {} }); blobUrls = [];
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   if (ws) { ws.close(); ws = null; }
