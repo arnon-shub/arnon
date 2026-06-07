@@ -48,8 +48,11 @@ p{color:#aaa;font-size:15px;margin-bottom:16px}
 <p>None. No third-party scripts, no CDNs, no external fonts, no analytics APIs. Everything runs from our server and your browser.</p>
 <h2>Relay location</h2>
 <p>Helsinki, Finland, EU (GDPR). Hosted on Hetzner. Operated by Particular Ltd.</p>
-<h2>A note on trust</h2>
-<p>Because the app loads fresh in your browser each time, you are trusting whoever serves it. Against an adversary who can compromise the server itself, an installed and independently verified messenger is stronger. Arnon is built for low-friction privacy, not for surviving a targeted server compromise.</p>
+<h2 id="threat-model">Threat model — what Arnon protects, and what it doesn't</h2>
+<p>Arnon is built for conversations more private than WhatsApp or Telegram. Those platforms hold the conversation itself — your messages, voice notes, and who you talk to. Arnon holds none of it: the chat is end-to-end encrypted, nothing is stored, and nothing remains after you close the tab.</p>
+<p>One thing Arnon can't control: how you send the link. Sharing it over a normal channel (a text, WhatsApp, email) lets that channel see <em>that</em> a link was shared — but never the conversation. So the worst case is far better than chatting on those apps directly: they'd see everything; here they'd only see that two people exchanged a link. For a personal chat, send the link through your usual app, then hold the actual conversation in Arnon — not in the app you sent it through.</p>
+<p>The relay can never read your messages — they're encrypted end-to-end and the keys never leave the two browsers. It does see that two addresses are connected, when, and roughly how much. To hide that too, use <a href="https://www.torproject.org/download/">Tor Browser</a>.</p>
+<p>Honest limit: because the app loads fresh in your browser each time, you trust whoever serves it. Against an adversary who can compromise the server, DNS, or TLS and target you specifically, an installed, independently verified client (Signal, SimpleX) is stronger. Arnon is built for low-friction, identity-free privacy — not for surviving a targeted server compromise.</p>
 <h2>IP anonymity</h2>
 <p>For full IP anonymity, use <a href="https://www.torproject.org/download/">Tor Browser</a>. Voice notes may not work in Tor Browser.</p>
 <h2>Open source</h2>
