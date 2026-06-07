@@ -43,7 +43,7 @@ arnon/
 ├── privacy.html
 ├── accessibility.html
 ├── CNAME                   # custom domain for GitHub Pages
-├── LICENSE                 # AGPL-3.0 (replace with FULL text — see file)
+├── LICENSE                 # AGPL-3.0
 ├── Dockerfile
 ├── .gitignore
 ├── .well-known/
@@ -101,7 +101,6 @@ Host on GitHub Pages. Update the `RELAY` and `BASE` constants at the top of
 ## License
 
 AGPL-3.0 — running a public relay built on this code requires publishing your
-changes. See `LICENSE` (replace the placeholder with the full AGPL text).
+changes. See `LICENSE` for the full text.
 
 Built by Particular Ltd.
-EOF
