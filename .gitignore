@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+relay/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local infra / secrets — never commit
+arnon-infra.md
+*.env
+.env
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

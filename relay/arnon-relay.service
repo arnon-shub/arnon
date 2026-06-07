@@ -1,0 +1,23 @@
+[Unit]
+Description=Arnon blind relay
+After=network.target
+
+[Service]
+Type=simple
+User=arnon
+Group=arnon
+WorkingDirectory=/opt/arnon/relay
+Environment=TRUST_PROXY=1
+ExecStart=/usr/bin/node server.js --port 9444
+Restart=always
+RestartSec=3
+# hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/opt/arnon/relay
+# relay writes nothing to disk; no writable paths needed
+
+[Install]
+WantedBy=multi-user.target
