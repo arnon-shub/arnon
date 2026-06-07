@@ -2,7 +2,7 @@
 
 Encrypted conversations that leave no trace. No download. No account. No history.
 
-A complete encrypted messenger — app + relay — in a single browser file plus a small Node relay.
+A complete encrypted messenger — app + relay — in a single browser file plus a small Node relay. The whole thing is about 600 lines, small enough to read and audit yourself.
 
 ## How it works
 
