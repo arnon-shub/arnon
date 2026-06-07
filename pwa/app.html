@@ -152,7 +152,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,.hbtn:focus-visibl
 // ── CONFIG — edit these for self-hosted deployments ──
 var RELAY = 'wss://relay.arnon.app/ws';
 var BASE = 'https://arnon.app/pwa/app.html';
-var ws, room, myKeys, derivedKey, peerPub, connected = false, peerClosed = false;
+var ws, room, myKeys, derivedKey, peerPub, connected = false, peerClosed = false, disconnectNotice = null;
 var timerInterval = null;
 var ttlSeconds = 0, roomCreatedAt = 0, destructAt = 0, warned60 = false;
 var blobUrls = [];
@@ -160,7 +160,7 @@ var blobUrls = [];
 // ── UTIL ──
 function show(id) { document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('on'); }); document.getElementById(id).classList.add('on'); }
 function toast(t) { var e = document.getElementById('toast'); e.textContent = t; e.classList.add('on'); setTimeout(function() { e.classList.remove('on'); }, 2500); }
-function addMsg(html, cls) { var d = document.getElementById('msgs'), m = document.createElement('div'); m.className = 'm ' + cls; m.innerHTML = html; d.appendChild(m); d.scrollTop = d.scrollHeight; }
+function addMsg(html, cls) { var d = document.getElementById('msgs'), m = document.createElement('div'); m.className = 'm ' + cls; m.innerHTML = html; d.appendChild(m); d.scrollTop = d.scrollHeight; return m; }
 function escHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 function linkify(h) { return h.replace(/(?:https?:\/\/|xmpp:)[^\s<&"'`]+/gi, function(u) { return '<a href="' + u.replace(/&/g,'&amp;').replace(/"/g,'&quot;') + '" target="_blank" rel="noopener noreferrer">' + u + '</a>'; }); }
 function confirmLink(e) { var a = e.target.closest('.m a'); if (a) { e.preventDefault(); if (confirm('Opening this link will leave the encrypted chat.\n\n' + a.href)) window.open(a.href, '_blank', 'noopener,noreferrer'); } }
@@ -283,13 +283,28 @@ document.addEventListener('visibilitychange', function() {
 function connect(onOpen) {
   ws = new WebSocket(RELAY);
   ws.onopen = onOpen;
-  ws.onmessage = async function(e) {
-    var raw = e.data;
-    if (raw instanceof Blob) raw = await raw.text();
-    try { handle(JSON.parse(raw)); } catch(err) {}
+  // Handle frames strictly in arrival order. The relay forwards peer payloads
+  // (msg/voice/bye) as BINARY frames — the browser delivers those as a Blob we must
+  // `await .text()` on — while control frames it generates itself (peer_left) arrive as
+  // plain strings handled synchronously. Without a queue, a synchronous string frame can
+  // overtake an earlier-but-async Blob frame: that race let 'peer_left' jump ahead of an
+  // intentional 'bye' and print two contradictory end-of-chat notices. Chaining each frame
+  // onto the previous one's completion keeps processing in wire order, so 'bye' (sent
+  // first) is handled before 'peer_left' and the peerClosed guard suppresses the duplicate.
+  var chain = Promise.resolve();
+  ws.onmessage = function(e) {
+    var data = e.data;
+    chain = chain.then(function() { return processFrame(data); });
   };
   ws.onclose = function() { if (connected) { connected = false; setStatus(false); } };
   ws.onerror = function() { toast('Connection error'); };
+}
+
+async function processFrame(raw) {
+  try {
+    if (raw instanceof Blob) raw = await raw.text();
+    await handle(JSON.parse(raw));
+  } catch (err) {}
 }
 
 function wsend(o) { if (ws && ws.readyState === 1) ws.send(JSON.stringify(o)); }
@@ -342,11 +357,16 @@ async function handle(m) {
     case 'bye':
       peerClosed = true;
       connected = false; setStatus(false);
+      // 'bye' is authoritative: if a 'peer_left' notice somehow rendered first, retract it
+      // so the two contradictory end-of-chat messages can never coexist.
+      if (disconnectNotice) { disconnectNotice.remove(); disconnectNotice = null; }
       addMsg('Peer closed the chat — their copy has been destroyed.', 'sys');
       break;
     case 'peer_left':
       connected = false; setStatus(false);
-      if (!peerClosed) addMsg('Peer disconnected — they may have lost connection; their copy may still be open.', 'sys');
+      // Suppress when an intentional 'bye' already arrived; otherwise keep a handle to this
+      // node so a 'bye' landing right after can retract it (belt-and-suspenders ordering).
+      if (!peerClosed) disconnectNotice = addMsg('Peer disconnected — they may have lost connection; their copy may still be open.', 'sys');
       break;
     case 'destroyed':
       selfDestruct();
@@ -427,7 +447,7 @@ function destroy() {
   // tell the peer this is an intentional close (their UI can distinguish it
   // from a dropped connection) — best-effort, before we tear the socket down
   if (ws && ws.readyState === 1) { try { ws.send(JSON.stringify({ type: 'bye' })); } catch(e) {} }
-  connected = false; derivedKey = null; myKeys = null; peerPub = null; ttlSeconds = 0; roomCreatedAt = 0; destructAt = 0; warned60 = false;
+  connected = false; derivedKey = null; myKeys = null; peerPub = null; ttlSeconds = 0; roomCreatedAt = 0; destructAt = 0; warned60 = false; disconnectNotice = null;
   blobUrls.forEach(function(u) { try { URL.revokeObjectURL(u); } catch(e) {} }); blobUrls = [];
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   if (ws) { ws.close(); ws = null; }
