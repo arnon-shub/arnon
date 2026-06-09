@@ -4,222 +4,236 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; font-src 'none'; script-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
 <meta property="og:title" content="Arnon — You Are None">
-<meta property="og:description" content="Encrypted conversations that leave no trace. No download. No account. No history.">
+<meta property="og:description" content="Encrypted conversations that leave no trace. No account. No app required. No history.">
 <meta property="og:url" content="https://arnon.app">
 <meta property="og:type" content="website">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="/pwa/icon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="description" content="Arnon — Encrypted conversations that leave no trace. No account. No download. No history.">
+<meta name="description" content="Arnon — Encrypted conversations that leave no trace. No account. No app required. No history.">
 <title>Arnon — You Are None</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro',sans-serif;background:#0a0a0a;color:#fff}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro',sans-serif;background:#0a0a0a;color:#fff;line-height:1.5}
 a{color:#eee;text-decoration:none}
-a:focus-visible{outline:2px solid #eee;outline-offset:2px}
-.hero-btn:focus-visible{outline:2px solid #eee;outline-offset:2px}
+:focus-visible{outline:2px solid #eee;outline-offset:2px;border-radius:2px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
+/* Skip link: visible on keyboard focus */
+.skip-link{position:absolute;left:50%;top:-60px;transform:translateX(-50%);background:#eee;color:#0a0a0a;padding:10px 20px;border-radius:8px;font-weight:600;z-index:10;transition:top 0.15s}
+.skip-link:focus{top:12px}
+
 .hero{text-align:center;padding:100px 24px 80px}
-.hero-logo{font-size:clamp(64px,15vw,96px);font-weight:800;letter-spacing:-3px;color:#eee}
-.hero-tag{font-size:18px;color:#888;margin:8px 0 32px;font-style:italic}
-.hero-lead{max-width:540px;margin:0 auto 18px;font-size:20px;line-height:1.5;font-weight:500}
-.hero-desc{max-width:500px;margin:0 auto 40px;font-size:17px;line-height:1.7;color:#999}
-.hero-btn{display:inline-block;padding:16px 40px;background:#eee;color:#0a0a0a;border-radius:12px;font-size:18px;font-weight:600;transition:all 0.2s}
+.hero-logo{font-size:clamp(64px,15vw,96px);font-weight:800;letter-spacing:-3px;color:#eee;line-height:1.05}
+.hero-tag{font-size:18px;color:#9a9a9a;margin:8px 0 32px;font-style:italic}
+.hero-lead{max-width:540px;margin:0 auto 18px;font-size:clamp(18px,4.5vw,20px);line-height:1.5;font-weight:500}
+.hero-desc{max-width:520px;margin:0 auto 40px;font-size:17px;line-height:1.7;color:#a5a5a5}
+.hero-btn{display:inline-block;padding:16px 40px;background:#eee;color:#0a0a0a;border-radius:12px;font-size:18px;font-weight:600;transition:background 0.2s,transform 0.2s;min-height:44px}
 .hero-btn:hover{background:#ccc;transform:translateY(-1px)}
-.hero-note{font-size:13px;color:#aaa;margin-top:16px}
+.hero-note{font-size:13px;color:#a5a5a5;margin-top:16px}
 .hero-note a{color:#fff;text-decoration:underline;text-underline-offset:3px}
 
-.demo{max-width:820px;margin:0 auto;padding:40px 24px 80px}
-.demo-box{background:#111;border:1px solid #222;border-radius:16px;overflow:hidden;padding:24px}
-.demo-flow{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:nowrap}
-.demo-step{flex:1;min-width:0;text-align:center;padding:10px}
-.demo-num{width:40px;height:40px;border-radius:50%;background:#1a1a1a;border:1px solid #333;display:inline-flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#eee;margin-bottom:10px}
-.demo-step h3{font-size:14px;margin-bottom:4px}
-.demo-step p{font-size:12px;color:#888}
-.demo-arrow{font-size:20px;color:#333;flex-shrink:0}
-.use-case{max-width:600px;margin:28px auto 0;text-align:center;color:#999;font-size:14px;line-height:1.7}
+.section-title{text-align:center;font-size:clamp(20px,5vw,22px);font-weight:600;margin-bottom:24px}
 
-.divider{height:1px;background:#151515;max-width:800px;margin:0 auto}
+.demo{max-width:820px;margin:0 auto;padding:40px 24px 64px}
+.demo-box{background:#111;border:1px solid #222;border-radius:16px;padding:24px}
+.steps{list-style:none;counter-reset:step;display:flex;flex-direction:column;gap:18px;max-width:560px;margin:0 auto}
+.steps li{counter-increment:step;display:flex;align-items:flex-start;gap:16px;font-size:15px;line-height:1.6;color:#cfcfcf}
+.steps li::before{content:counter(step);flex-shrink:0;width:34px;height:34px;border-radius:50%;background:#1a1a1a;border:1px solid #333;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#eee}
+.steps li span{padding-top:5px}
+.use-case{max-width:600px;margin:28px auto 0;text-align:center;color:#a5a5a5;font-size:14px;line-height:1.7}
 
-.features{display:grid;grid-template-columns:repeat(2,1fr);max-width:900px;margin:0 auto;padding:64px 24px;gap:40px}
-.feature{padding-left:20px;border-left:2px solid #333}
-.feature h3{font-size:16px;font-weight:600;margin-bottom:6px;color:#ddd}
-.feature p{color:#999;font-size:14px;line-height:1.6}
+.divider{height:1px;background:#1f1f1f;max-width:800px;margin:0 auto}
 
-.comp-table{width:100%;border-collapse:collapse;font-size:14px}
-.comp-table th{text-align:left;padding:12px;color:#888;font-weight:400;border-bottom:1px solid #1a1a1a}
-.comp-table th[scope="row"]{color:#aaa;font-weight:400}
-.comp-table td{padding:12px;border-bottom:1px solid #111}
-.comp-table .yes{color:#30d158}.comp-table .no{color:#ff453a}.comp-table .maybe{color:#ff9f0a}
+.wrap{max-width:900px;margin:0 auto;padding:56px 24px}
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:32px 40px;margin-top:8px}
+.feature{padding-left:18px;border-left:2px solid #333}
+.feature h3{font-size:16px;font-weight:600;margin-bottom:6px;color:#e2e2e2}
+.feature p{color:#a5a5a5;font-size:14px;line-height:1.6}
 
-.trust-note{max-width:640px;margin:0 auto;padding:8px 24px 56px}
+.suited{max-width:640px;margin:0 auto;padding:8px 24px 16px}
+.suited .box{background:#0f0f0f;border:1px solid #1f1f1f;border-radius:12px;padding:24px}
+.suited h2{font-size:15px;font-weight:600;color:#e2e2e2;margin-bottom:10px}
+.suited p{color:#a5a5a5;font-size:14px;line-height:1.7}
+
+.trust-note{max-width:640px;margin:0 auto;padding:24px 24px 16px}
 .trust-note .box{background:#0f0f0f;border:1px solid #1f1f1f;border-radius:12px;padding:24px}
-.trust-note h2{font-size:15px;font-weight:600;color:#ddd;margin-bottom:10px}
-.trust-note p{color:#999;font-size:14px;line-height:1.7;margin-bottom:10px}
+.trust-note h2{font-size:15px;font-weight:600;color:#e2e2e2;margin-bottom:10px}
+.trust-note p{color:#a5a5a5;font-size:14px;line-height:1.7;margin-bottom:10px}
 .trust-note p:last-child{margin-bottom:0}
+.trust-note a{color:#fff;text-decoration:underline;text-underline-offset:3px}
 
-footer{text-align:center;padding:40px 24px;border-top:1px solid #222;color:#888;font-size:12px}
-footer a{color:#aaa}footer a:hover{color:#fff}
+.meta{max-width:640px;margin:0 auto;padding:24px}
+.meta dl{display:grid;grid-template-columns:auto 1fr;gap:8px 20px;font-size:14px}
+.meta dt{color:#e2e2e2;font-weight:600}
+.meta dd{color:#a5a5a5;line-height:1.6}
+.meta dd a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+
+.cta{text-align:center;padding:40px 24px 64px;border-top:1px solid #1f1f1f}
+
+footer{text-align:center;padding:40px 24px;border-top:1px solid #222;color:#a5a5a5;font-size:12px;line-height:2}
+footer a{color:#c4c4c4;text-decoration:underline;text-underline-offset:2px}
+footer a:hover{color:#fff}
 
 @media(max-width:700px){
-  .hero{padding:60px 20px 60px}
-  .demo-flow{flex-direction:column}
-  .demo-arrow{transform:rotate(90deg)}
-  .features{grid-template-columns:1fr}
+  .hero{padding:64px 20px 56px}
+  .wrap{padding:48px 20px}
+  .features{grid-template-columns:1fr;gap:28px}
+  .demo{padding:32px 20px 48px}
+  .meta dl{grid-template-columns:1fr;gap:2px 0}
+  .meta dd{margin-bottom:12px}
 }
+
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .hero-btn:hover{transform:none}
+  .skip-link{transition:none}
+}
+
 @media(prefers-color-scheme:light){
   body{background:#fff;color:#111}
   a{color:#111}
+  :focus-visible{outline-color:#111}
+  .skip-link{background:#111;color:#fff}
   .hero-logo{color:#111}
-  .hero-tag{color:#666}.hero-desc{color:#555}
+  .hero-tag{color:#595959}.hero-desc{color:#444}
   .hero-btn{background:#111;color:#fff}
   .hero-btn:hover{background:#333}
-  .demo-box{background:#f8f8f8;border-color:#eee}
-  .demo-num{background:#f0f0f0;border-color:#ddd;color:#111}
-  .demo-arrow{color:#ccc}
-  .demo-step p{color:#666}
-  .use-case{color:#666}
-  .divider{background:#eee}
-  .feature{border-color:#ddd}.feature h3{color:#222}.feature p{color:#666}
-  .comp-table th{color:#666;border-color:#eee}.comp-table th[scope="row"]{color:#444}.comp-table td{border-color:#f5f5f5;color:#444}.comp-table .yes{color:#1a7f37}.comp-table .no{color:#c1121f}.comp-table .maybe{color:#9a6700}
-  .trust-note .box{background:#f8f8f8;border-color:#eee}
-  .trust-note h3{color:#222}.trust-note p{color:#666}
-  .hero-note{color:#666}
+  .hero-note{color:#595959}
   .hero-note a{color:#111}
-  a:focus-visible{outline-color:#111}
-  .hero-btn:focus-visible{outline-color:#111}
-  footer{border-color:#eee;color:#666}footer a{color:#555}footer a:hover{color:#111}
+  .demo-box{background:#f8f8f8;border-color:#e2e2e2}
+  .steps li{color:#333}
+  .steps li::before{background:#f0f0f0;border-color:#ddd;color:#111}
+  .use-case{color:#595959}
+  .divider{background:#e6e6e6}
+  .feature{border-color:#ddd}.feature h3{color:#1a1a1a}.feature p{color:#555}
+  .suited .box{background:#f8f8f8;border-color:#e2e2e2}
+  .suited h2{color:#1a1a1a}.suited p{color:#555}
+  .trust-note .box{background:#f8f8f8;border-color:#e2e2e2}
+  .trust-note h2{color:#1a1a1a}.trust-note p{color:#555}
+  .trust-note a{color:#111}
+  .meta dt{color:#1a1a1a}.meta dd{color:#555}.meta dd a{color:#111}
+  .cta{border-color:#e6e6e6}
+  footer{border-color:#e6e6e6;color:#595959}footer a{color:#444}footer a:hover{color:#111}
 }
 </style>
 </head>
 <body>
 
-<section class="hero">
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="hero">
   <h1 class="hero-logo">arnon</h1>
-  <div class="hero-tag">You are none.</div>
-  <p class="hero-lead">Encrypted conversations that leave no trace. No download, no account, no history.</p>
+  <p class="hero-tag">You are none.</p>
+  <p class="hero-lead">Encrypted conversations that leave no trace. No account. No app required. No history.</p>
   <p class="hero-desc">
-    Send a link. Exchange encrypted texts and voice notes. Close the tab — gone.
-    No app to install. No account to create. No trace left behind.
-    For sources, tips, or conversations that shouldn't exist.
+    Arnon is a free, open-source tool for one-off private conversations. It runs entirely
+    in the browser — no installation and no registration required. The entire application
+    and relay together are roughly 600 lines of code, small enough to read and audit yourself.
   </p>
   <a href="/pwa/app.html" class="hero-btn">Start a conversation</a>
   <p class="hero-note">Free · no sign-up · works in any browser</p>
-</section>
+</header>
 
-<div class="demo" id="how">
-  <h2 class="sr-only">How it works</h2>
-  <div class="demo-box">
-    <div class="demo-flow">
-      <div class="demo-step">
-        <div class="demo-num">1</div>
-        <h3>Start</h3>
-        <p>Tap "New conversation"<br>Get a link</p>
+<main id="main">
+
+  <section class="demo" aria-labelledby="how-h">
+    <h2 id="how-h" class="section-title">How it works</h2>
+    <div class="demo-box">
+      <ol class="steps">
+        <li><span>Tap “New conversation” to create a link.</span></li>
+        <li><span>Send the link to someone through WhatsApp, Telegram, Signal, email, or any other channel.</span></li>
+        <li><span>The other person opens the link and an encrypted chat starts immediately.</span></li>
+        <li><span>Optionally compare a safety number to confirm no one is in the middle.</span></li>
+        <li><span>Close the tab — the conversation, keys, and all data disappear.</span></li>
+      </ol>
+    </div>
+    <p class="use-case">Not everyone you talk to belongs in your contacts. A stranger, a one-time exchange — talk, then close the tab. No history, no saved chat, nothing added to anyone’s contacts.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="wrap" aria-labelledby="features-h">
+    <h2 id="features-h" class="section-title">Key features</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>End-to-end encrypted</h3>
+        <p>ECDH key exchange with AES-256-GCM via the Web Crypto API. Every conversation generates fresh keys, and a safety number lets both sides confirm no one is in the middle.</p>
       </div>
-      <div class="demo-arrow" aria-hidden="true">→</div>
-      <div class="demo-step">
-        <div class="demo-num">2</div>
-        <h3>Share</h3>
-        <p>Send the link<br>by any channel</p>
+      <div class="feature">
+        <h3>No identity</h3>
+        <p>No phone number, no email, no account, no contacts. No registration of any kind. You’re nobody — by design.</p>
       </div>
-      <div class="demo-arrow" aria-hidden="true">→</div>
-      <div class="demo-step">
-        <div class="demo-num">3</div>
-        <h3>Chat</h3>
-        <p>They open it<br>Instant encrypted chat</p>
+      <div class="feature">
+        <h3>Text &amp; voice</h3>
+        <p>Send text messages and voice notes up to 30 seconds, all encrypted end-to-end. No photos, video, or file sharing — by design.</p>
       </div>
-      <div class="demo-arrow" aria-hidden="true">→</div>
-      <div class="demo-step">
-        <div class="demo-num">4</div>
-        <h3>Gone</h3>
-        <p>Close the tab<br>Zero trace</p>
+      <div class="feature">
+        <h3>Self-destruct timer</h3>
+        <p>Set a timer when you create a conversation. When time’s up, the entire room is destroyed on both sides — even if nobody closes the tab.</p>
+      </div>
+      <div class="feature">
+        <h3>Runs anywhere</h3>
+        <p>Works in any modern browser — phone, laptop, or tablet — including Tor Browser. Nothing to install. (Voice notes may not work in Tor Browser.)</p>
+      </div>
+      <div class="feature">
+        <h3>Small &amp; auditable</h3>
+        <p>The whole thing — app and relay combined — is small enough to read every line yourself, instead of trusting that someone audited a codebase you’ll never open. Open source on GitHub.</p>
       </div>
     </div>
-  </div>
-  <p class="use-case">Not everyone you talk to belongs in your contacts. A stranger, a one-time conversation — talk, then close the tab. No history, no saved chat, nothing added to anyone's contacts.</p>
-</div>
+  </section>
 
-<div class="divider"></div>
+  <div class="divider"></div>
 
-<section class="features" aria-labelledby="features-h">
-  <h2 id="features-h" class="sr-only">Features</h2>
-  <div class="feature">
-    <h3>End-to-end encrypted</h3>
-    <p>ECDH key exchange with AES-256-GCM. Every conversation generates fresh keys. A safety number lets both sides confirm no one is in the middle. Runs entirely in your browser via Web Crypto API.</p>
-  </div>
-  <div class="feature">
-    <h3>No trace</h3>
-    <p>Close the tab and everything is destroyed. Keys, messages, identity — all gone. Nothing saved anywhere.</p>
-  </div>
-  <div class="feature">
-    <h3>No account</h3>
-    <p>No phone number. No email. No registration. No identity. You're nobody — by design.</p>
-  </div>
-  <div class="feature">
-    <h3>No download</h3>
-    <p>Works in any browser. Phone, laptop, tablet. Nothing to install. Send a link, start chatting.</p>
-  </div>
-  <div class="feature">
-    <h3>Text &amp; voice</h3>
-    <p>Send text messages and voice notes up to 30 seconds. Everything encrypted end-to-end. Nothing stored. No photos, videos, or file sharing — by design.</p>
-  </div>
-  <div class="feature">
-    <h3>Self-destruct</h3>
-    <p>Set a timer when you create a conversation. When time's up, the room is destroyed on both sides — even if nobody closes the tab.</p>
-  </div>
-  <div class="feature">
-    <h3>Small enough to verify</h3>
-    <p>The whole thing — app and relay combined — is about 600 lines. Small enough to read every line yourself in an afternoon, instead of trusting that someone audited a codebase you'll never open. All open source on GitHub, and the crypto runs in your browser.</p>
-  </div>
-  <div class="feature">
-    <h3>Blind relay</h3>
-    <p>Messages pass through a relay that holds only encrypted blobs in memory — nothing is written to disk. No accounts, no stored logs. Hosted in Helsinki, EU (GDPR).</p>
-  </div>
-</section>
+  <section class="suited" aria-labelledby="suited-h">
+    <div class="box">
+      <h2 id="suited-h">Best suited for</h2>
+      <p>One-off conversations, sources, tips, or situations where you want minimal traces and don’t want to create accounts or add people to your contacts. Not intended for daily use, or for situations where someone powerful is specifically targeting you.</p>
+    </div>
+  </section>
 
-<div class="divider"></div>
+  <section class="trust-note" aria-labelledby="trust-h">
+    <div class="box">
+      <h2 id="trust-h">What it protects — and what it doesn’t</h2>
+      <p>Arnon is built for low-friction privacy. When you send the link via WhatsApp, Telegram, or similar platforms, those services only see that a link was sent. They do not know whether a conversation took place or what was said inside Arnon.</p>
+      <p>The relay is blind — it receives only encrypted blobs and writes nothing to disk. It cannot read message content, but it can see that two parties are communicating. For stronger anonymity, use Tor Browser.</p>
+      <p>However, because the app loads fresh from the server each time, you trust the page you open. Against a targeted adversary who can compromise the server, DNS, or TLS, an installed and independently verified client (such as Signal or SimpleX) is stronger. Arnon is not designed to survive targeted server compromise. <a href="/privacy.html#threat-model">Read the full threat model →</a></p>
+    </div>
+  </section>
 
-<section style="max-width:800px;margin:0 auto;padding:48px 24px 32px">
-  <h2 style="text-align:center;font-size:22px;font-weight:600;margin-bottom:24px">Why not just use...?</h2>
-  <div style="overflow-x:auto">
-  <table class="comp-table" role="table" aria-label="Feature comparison">
-    <tr><th scope="col"></th><th scope="col">Arnon</th><th scope="col">Signal</th><th scope="col">WhatsApp</th><th scope="col">Telegram</th><th scope="col">Session</th><th scope="col">SimpleX</th><th scope="col">XChat</th></tr>
-    <tr><th scope="row">Works in browser</th><td class="yes">✓</td><td class="no">✗</td><td class="maybe">needs phone app</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="maybe">in X</td></tr>
-    <tr><th scope="row">No app to install</th><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
-    <tr><th scope="row">No phone number</th><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="maybe">X account</td></tr>
-    <tr><th scope="row">No account</th><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="maybe">local key</td><td class="maybe">local profile</td><td class="no">✗</td></tr>
-    <tr><th scope="row">Nothing stored on a server</th><td class="yes">✓</td><td class="maybe">local only</td><td class="no">✗</td><td class="no">✗</td><td class="maybe">local only</td><td class="maybe">local only</td><td class="no">✗</td></tr>
-    <tr><th scope="row">Self-destruct timer</th><td class="yes">whole room</td><td class="maybe">messages</td><td class="maybe">messages</td><td class="maybe">messages</td><td class="maybe">messages</td><td class="maybe">messages</td><td class="maybe">messages</td></tr>
-    <tr><th scope="row">Voice notes</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><th scope="row">IPs hidden from peer</th><td class="yes">relay</td><td class="yes">server</td><td class="maybe">opt-in</td><td class="yes">server</td><td class="yes">onion</td><td class="yes">relay</td><td class="yes">server</td></tr>
-    <tr><th scope="row">No ads or tracking</th><td class="yes">✓</td><td class="yes">✓</td><td class="no">metadata</td><td class="no">ads</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><th scope="row">End-to-end encrypted</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="maybe">chats only</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><th scope="row">Key verification</th><td class="yes">safety number</td><td class="yes">✓</td><td class="yes">✓</td><td class="maybe">secret chats</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">safety number</td></tr>
-    <tr><th scope="row">Open source</th><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="maybe">partial</td><td class="yes">✓</td><td class="yes">✓</td><td class="maybe">partial</td></tr>
-    <tr><th scope="row">Independently audited</th><td class="no">✗</td><td class="yes">✓</td><td class="maybe">protocol</td><td class="maybe">disputed</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td></tr>
-    <tr><th scope="row">Resists targeted server compromise</th><td class="no">trust the page</td><td class="yes">✓</td><td class="maybe">closed app</td><td class="maybe">closed app</td><td class="yes">✓</td><td class="yes">✓</td><td class="maybe">closed app</td></tr>
-  </table>
-  <p style="text-align:center;color:#999;font-size:14px;margin-top:24px;line-height:1.6">Other private messengers store your account and history on a device or a server. Arnon runs entirely in your browser — no install, no sign-up, and nothing kept after you close the tab.</p>
-  <p style="text-align:center;color:#888;font-size:13px;margin-top:16px;line-height:1.7;max-width:560px;margin-left:auto;margin-right:auto">Arnon is a free, self-hostable side project from Particular Ltd — not a funded startup, just a single relay server and a browser app designed to disappear.</p>
-  </div>
-</section>
+  <section class="meta" aria-labelledby="meta-h">
+    <h2 id="meta-h" class="sr-only">Project details</h2>
+    <dl>
+      <dt>Support</dt>
+      <dd><a href="https://github.com/arnon-shub/arnon/issues">GitHub Issues</a> only. No email support.</dd>
+      <dt>Relay</dt>
+      <dd>Blind relay hosted in Helsinki, EU (GDPR). Self-hosting supported.</dd>
+      <dt>License</dt>
+      <dd>AGPL-3.0 — free and open source.</dd>
+      <dt>Built by</dt>
+      <dd><a href="https://particular.co.il">Particular Ltd.</a> as a side project.</dd>
+    </dl>
+  </section>
 
-<div class="trust-note">
-  <div class="box">
-    <h2>What Arnon protects — and what it doesn't</h2>
-    <p>Arnon is end-to-end encrypted and keeps nothing after you close the tab — but because the app loads fresh in your browser each time, you trust whoever serves it. Against an adversary who can compromise the server, DNS, or TLS to target you specifically, an installed, independently verified client like Signal or SimpleX is stronger; Arnon is built for low-friction, identity-free privacy, not for surviving a targeted server compromise. <a href="/privacy.html#threat-model" style="color:inherit;text-decoration:underline">Read the full threat model →</a></p>
-  </div>
-</div>
+  <section class="cta" aria-labelledby="cta-h">
+    <h2 id="cta-h" class="sr-only">Get started</h2>
+    <a href="/pwa/app.html" class="hero-btn">Start a conversation</a>
+    <p class="hero-note">For stronger anonymity, use <a href="https://www.torproject.org/download/">Tor Browser</a>. Voice notes may not work in Tor Browser.</p>
+  </section>
 
-<section style="text-align:center;padding:32px 24px 64px;border-top:1px solid #151515">
-  <a href="/pwa/app.html" class="hero-btn">Start a conversation</a>
-  <p class="hero-note" style="margin-top:16px">For stronger anonymity, use <a href="https://www.torproject.org/download/">Tor Browser</a>. Voice notes may not work in Tor Browser.</p>
-</section>
+</main>
 
 <footer>
-  <a href="https://github.com/arnon-shub/arnon">GitHub</a> · <a href="https://github.com/arnon-shub/arnon/issues">Issues</a> · <a href="/privacy.html">Privacy</a> · <a href="/accessibility.html">Accessibility</a> · <a href="/terms.html">Terms</a> · Relay: Helsinki, EU · Built by <a href="https://particular.co.il">Particular Ltd.</a>
+  <a href="https://github.com/arnon-shub/arnon">GitHub</a> ·
+  <a href="https://github.com/arnon-shub/arnon/issues">Issues</a> ·
+  <a href="/privacy.html">Privacy</a> ·
+  <a href="/accessibility.html">Accessibility</a> ·
+  <a href="/terms.html">Terms</a> ·
+  Relay: Helsinki, EU ·
+  Built by <a href="https://particular.co.il">Particular Ltd.</a>
 </footer>
 
 </body>

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; font-src 'none'; script-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
 <title>Privacy Policy — Arnon</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="/pwa/icon-192.png">
@@ -15,14 +16,27 @@ a{color:#eee;text-decoration:underline;text-underline-offset:3px}
 a:hover{color:#fff}
 a:focus-visible{outline:2px solid #eee;outline-offset:2px}
 .wrap{max-width:640px;margin:0 auto;padding:48px 24px 80px}
-h1{font-size:28px;font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
+h1{font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
 h2{font-size:18px;font-weight:600;margin-top:32px;margin-bottom:8px}
 p{color:#aaa;font-size:15px;margin-bottom:16px}
-.back{display:inline-block;margin-bottom:32px;font-size:14px;color:#999}
-.updated{font-size:13px;color:#8a8a8a;margin-top:40px}
+.back{display:inline-block;margin-bottom:32px;font-size:14px;color:#aaa}
+.updated{font-size:13px;color:#aaa;margin-top:40px}
+body{overflow-wrap:break-word}
+.skip-link{position:absolute;left:50%;top:-60px;transform:translateX(-50%);background:#eee;color:#0a0a0a;padding:10px 20px;border-radius:8px;font-weight:600;z-index:10;transition:top .15s;text-decoration:none}
+.skip-link:focus{top:12px}
+h1{font-size:clamp(24px,7vw,28px)}
+@media(max-width:600px){
+  .wrap{padding:32px 18px 64px}
+  h2{margin-top:28px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .skip-link{transition:none}
+}
 @media(prefers-color-scheme:light){
   body{background:#fff;color:#111}
   a{color:#111}
+  .skip-link{background:#111;color:#fff}
   p{color:#555}
   .back{color:#666}
   .updated{color:#666}
@@ -30,36 +44,54 @@ p{color:#aaa;font-size:15px;margin-bottom:16px}
 </style>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to main content</a>
 <div class="wrap">
-<a href="/" class="back">← Back to home</a>
+<nav aria-label="Breadcrumb"><a href="/" class="back">← Back to home</a></nav>
+<main id="main">
 <h1>Privacy Policy</h1>
 <p>This is the shortest privacy policy you'll ever read. Because there is almost nothing to collect — and nothing is kept.</p>
+
 <h2>No accounts</h2>
 <p>No email, no phone number, no username, no password. You don't exist in our system.</p>
+
 <h2>No data collection</h2>
 <p>No analytics, no cookies, no tracking pixels, no fingerprinting. We don't know who you are, where you came from, or what you did.</p>
+
 <h2>No message storage</h2>
 <p>Messages are encrypted end-to-end in your browser (ECDH P-256 + AES-256-GCM). The relay holds only encrypted blobs in memory while a conversation is live — nothing is written to disk. Close the tab and everything is destroyed.</p>
+
 <h2>No stored logs</h2>
-<p>Nothing is written to disk: no access logs, no message logs, no history. There are no stored records to hand over. To operate, the relay must briefly hold connection details — your IP address and connection time — in memory while your room is open, used only for routing and abuse prevention. This is never written down and is gone the moment the room ends.</p>
+<p>Nothing is written to disk. There are no access logs, message logs, or history. To operate the relay, we must briefly hold your IP address and connection time <strong>in memory only</strong> while your room is active. This data is used solely for routing messages and basic per-room rate limiting. It is never written to disk and is deleted the moment the room ends.</p>
+
 <h2>What the relay can and cannot see</h2>
-<p>The relay <strong>cannot</strong> read your messages or voice notes — they are encrypted end-to-end and the keys never leave the two browsers. The relay <strong>can</strong> see that two addresses are connected, when, and roughly how much data passes between them. It cannot see who you are or what you said. All of this exists only in memory and disappears when the connection ends. To hide connection metadata as well, use Tor (below).</p>
+<p>The relay <strong>cannot</strong> read your messages or voice notes — they are encrypted end-to-end and the keys never leave the two browsers. The relay <strong>can</strong> see that two addresses are connected, when, and roughly how much data passes between them. It cannot see who you are or what you said. All of this exists only in memory and disappears when the connection ends. To hide connection metadata as well, use Tor Browser.</p>
+
 <h2>Third parties</h2>
 <p>None. No third-party scripts, no CDNs, no external fonts, no analytics APIs. Everything runs from our server and your browser.</p>
+
 <h2>Relay location</h2>
 <p>Helsinki, Finland, EU (GDPR). Hosted on Hetzner. Operated by Particular Ltd.</p>
+
 <h2 id="threat-model">Threat model — what Arnon protects, and what it doesn't</h2>
 <p>Arnon is built for conversations more private than WhatsApp or Telegram. Those platforms hold the conversation itself — your messages, voice notes, and who you talk to. Arnon holds none of it: the chat is end-to-end encrypted, nothing is stored, and nothing remains after you close the tab.</p>
-<p>One thing Arnon can't control: how you send the link. Sharing it over a normal channel (a text, WhatsApp, email) lets that channel see <em>that</em> a link was shared — but never the conversation. So the worst case is far better than chatting on those apps directly: they'd see everything; here they'd only see that two people exchanged a link. For a personal chat, send the link through your usual app, then hold the actual conversation in Arnon — not in the app you sent it through.</p>
-<p>The relay can never read your messages — they're encrypted end-to-end and the keys never leave the two browsers. It does see that two addresses are connected, when, and roughly how much. To hide that too, use <a href="https://www.torproject.org/download/">Tor Browser</a>.</p>
+
+<p>One thing Arnon can't control: how you send the link. Sharing it over a normal channel (a text, WhatsApp, email) lets that channel see <em>that</em> a link was shared — but never the conversation. So the worst case is far better than chatting on those apps directly.</p>
+
+<p>The relay can never read your messages. It does see that two addresses are connected, when, and roughly how much. To hide that too, use <a href="https://www.torproject.org/download/">Tor Browser</a>.</p>
+
 <p>Honest limit: because the app loads fresh in your browser each time, you trust whoever serves it. Against an adversary who can compromise the server, DNS, or TLS and target you specifically, an installed, independently verified client (Signal, SimpleX) is stronger. Arnon is built for low-friction, identity-free privacy — not for surviving a targeted server compromise.</p>
+
 <h2>IP anonymity</h2>
 <p>For full IP anonymity, use <a href="https://www.torproject.org/download/">Tor Browser</a>. Voice notes may not work in Tor Browser.</p>
+
 <h2>Open source</h2>
 <p>Don't trust this page — read the code. The entire application is <a href="https://github.com/arnon-shub/arnon">open source</a>.</p>
+
 <h2>Contact</h2>
 <p>Questions about privacy? Open an issue on <a href="https://github.com/arnon-shub/arnon/issues">GitHub</a>.</p>
+
 <p class="updated">Last updated: June 2026</p>
+</main>
 </div>
 </body>
 </html>

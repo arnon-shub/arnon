@@ -1,7 +1,7 @@
 const { WebSocketServer } = require('ws');
 const crypto = require('crypto');
 
-const PORT = parseInt(process.argv.find((_, i, a) => a[i-1] === '--port') || '9444');
+const PORT = parseInt(process.argv.find((_, i, a) => a[i-1] === '--port') || '9444', 10);
 
 // Trust X-Forwarded-For ONLY when behind a known proxy (Caddy/nginx).
 // Set TRUST_PROXY=1 in that case. Otherwise the source IP is taken from the
@@ -80,7 +80,7 @@ wss.on('connection', function(ws, req) {
       if ((ipRooms.get(ip) || 0) >= MAX_ROOMS_PER_IP) return ws.send(JSON.stringify({ type: 'error', msg: 'rate_limited' }));
 
       var id = crypto.randomBytes(ROOM_ID_BYTES).toString('hex');
-      var ttl = Math.min(Math.max(parseInt(m.ttl) || 0, 0), 3600);
+      var ttl = Math.min(Math.max(parseInt(m.ttl, 10) || 0, 0), 3600);
       var r = { peers: new Set([ws]), created: Date.now(), ttl: ttl, ip: ip };
       if (ttl > 0) r.timer = setTimeout(function() { destroyRoom(id); }, ttl * 1000);
       rooms.set(id, r);

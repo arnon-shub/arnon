@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; font-src 'none'; script-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
 <title>Accessibility — Arnon</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="/pwa/icon-192.png">
@@ -15,15 +16,28 @@ a{color:#eee;text-decoration:underline;text-underline-offset:3px}
 a:hover{color:#fff}
 a:focus-visible{outline:2px solid #eee;outline-offset:2px}
 .wrap{max-width:640px;margin:0 auto;padding:48px 24px 80px}
-h1{font-size:28px;font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
+h1{font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
 h2{font-size:18px;font-weight:600;margin-top:32px;margin-bottom:8px}
 p{color:#aaa;font-size:15px;margin-bottom:16px}
 ul{color:#aaa;font-size:15px;margin:0 0 16px 24px;display:flex;flex-direction:column;gap:6px}
-.back{display:inline-block;margin-bottom:32px;font-size:14px;color:#999}
-.updated{font-size:13px;color:#8a8a8a;margin-top:40px}
+.back{display:inline-block;margin-bottom:32px;font-size:14px;color:#aaa}
+.updated{font-size:13px;color:#aaa;margin-top:40px}
+body{overflow-wrap:break-word}
+.skip-link{position:absolute;left:50%;top:-60px;transform:translateX(-50%);background:#eee;color:#0a0a0a;padding:10px 20px;border-radius:8px;font-weight:600;z-index:10;transition:top .15s;text-decoration:none}
+.skip-link:focus{top:12px}
+h1{font-size:clamp(24px,7vw,28px)}
+@media(max-width:600px){
+  .wrap{padding:32px 18px 64px}
+  h2{margin-top:28px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .skip-link{transition:none}
+}
 @media(prefers-color-scheme:light){
   body{background:#fff;color:#111}
   a{color:#111}
+  .skip-link{background:#111;color:#fff}
   p,ul{color:#555}
   .back{color:#666}
   .updated{color:#666}
@@ -31,32 +45,38 @@ ul{color:#aaa;font-size:15px;margin:0 0 16px 24px;display:flex;flex-direction:co
 </style>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to main content</a>
 <div class="wrap">
-<a href="/" class="back">← Back to home</a>
+<nav aria-label="Breadcrumb"><a href="/" class="back">← Back to home</a></nav>
+<main id="main">
 <h1>Accessibility Statement</h1>
 <p>Arnon aims to follow the WCAG 2.1 Level AA guidelines and to be usable by everyone, including people who rely on assistive technology. We are not formally audited, so this is a statement of intent and ongoing effort, not certified compliance.</p>
+
 <h2>What we've done</h2>
 <ul>
   <li>ARIA labels on interactive elements (buttons, inputs, dialogs)</li>
   <li>Keyboard navigation with visible focus indicators; dialogs move focus inward, trap it, and close on Escape</li>
-  <li>Live regions so screen readers announce new messages and connection status, plus a one-time alert when a minute remains before self-destruct (the countdown itself is not announced every second)</li>
-  <li>Semantic HTML — table headers, roles, and landmarks</li>
+  <li>Live regions so screen readers announce new messages and connection status</li>
+  <li>Semantic HTML — roles and landmarks</li>
   <li>Responsive layout tested down to 320px-wide screens</li>
   <li>No zoom restrictions — users can scale freely</li>
   <li>Color contrast meets the WCAG AA 4.5:1 ratio for text, in both light and dark themes</li>
   <li>Light and dark mode on the landing page via system preference</li>
 </ul>
+
 <h2>Known limitations</h2>
 <ul>
   <li>The chat app uses a single dark theme; light mode is on the landing pages only</li>
-  <li>Voice notes require microphone access and may not be available on all assistive setups</li>
   <li>Voice notes may not work in Tor Browser</li>
   <li>Audio playback uses the browser's native player, whose accessibility varies by browser</li>
   <li>We have not completed a formal third-party accessibility audit</li>
 </ul>
+
 <h2>Feedback</h2>
 <p>If you hit an accessibility problem, please open an issue on <a href="https://github.com/arnon-shub/arnon/issues">GitHub</a> — it helps us fix it.</p>
+
 <p class="updated">Last updated: June 2026</p>
+</main>
 </div>
 </body>
 </html>

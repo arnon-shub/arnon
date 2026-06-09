@@ -20,13 +20,13 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 #home .tag{font-size:17px;color:var(--t2);font-style:italic;margin-bottom:32px}
 .hbtn{width:100%;max-width:320px;padding:18px;border-radius:14px;font-size:17px;font-weight:600}
 .hbtn.pri{background:var(--t1);color:var(--bg)}
-#home .foot{font-size:12px;color:var(--t3);margin-top:32px;line-height:1.8}
+#home .foot{font-size:13px;color:var(--t2);margin-top:32px;line-height:1.8}
 
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:50;align-items:center;justify-content:center;padding:24px}
 .modal-bg.on{display:flex}
 .modal{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:28px;width:100%;max-width:380px}
-.modal h3{font-size:19px;font-weight:600;margin-bottom:16px}
+.modal h2{font-size:19px;font-weight:600;margin-bottom:16px}
 .modal select{width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;color:var(--t1);font-size:16px;outline:none;margin-bottom:14px;font-family:inherit;-webkit-appearance:none}
 .modal select:focus{border-color:var(--bl)}
 .modal label{display:block;font-size:14px;color:var(--t2);margin-bottom:8px}
@@ -87,6 +87,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--t1);color:var(--bg);padding:10px 24px;border-radius:50px;font-size:15px;font-weight:500;z-index:99;opacity:0;transition:opacity .25s;pointer-events:none}.toast.on{opacity:1}
 button:focus-visible,input:focus-visible,select:focus-visible,.hbtn:focus-visible,.ibtn:focus-visible,.bend:focus-visible{outline:2px solid var(--blt);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.m{animation:none!important}.bmic.rec{animation:none!important;opacity:1}}
 @media(max-width:500px){.m{max-width:85%}#home h1{font-size:38px}}
 @media(max-width:360px){.lbtns{flex-direction:column}}
 </style>
@@ -97,12 +98,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,.hbtn:focus-visibl
   <h1>arnon</h1>
   <div class="tag">You are none.</div>
   <button class="hbtn pri" onclick="showCreate()">New conversation</button>
-  <div class="foot">End-to-end encrypted · No account · No history<br>Close the tab — everything is gone.</div>
+  <div class="foot">End-to-end encrypted. No account. No history.<br>Close the tab — everything disappears.</div>
 </div>
 
-<div id="createModal" class="modal-bg" role="dialog" aria-modal="true" aria-label="New conversation" onclick="if(event.target===this)hideCreate()">
+<div id="createModal" class="modal-bg" role="dialog" aria-modal="true" aria-labelledby="createModalTitle" onclick="if(event.target===this)hideCreate()">
   <div class="modal">
-    <h3>New conversation</h3>
+    <h2 id="createModalTitle">New conversation</h2>
     <label for="ttlSelect">Self-destruct</label>
     <select id="ttlSelect">
       <option value="0">Off</option>

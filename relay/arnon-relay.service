@@ -18,6 +18,15 @@ ProtectSystem=strict
 ProtectHome=true
 ReadOnlyPaths=/opt/arnon/relay
 # relay writes nothing to disk; no writable paths needed
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictNamespaces=true
+LockPersonality=true
+# NOTE: MemoryDenyWriteExecute is intentionally NOT set — it breaks V8's JIT (Node would fail to start).
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
 
 [Install]
 WantedBy=multi-user.target

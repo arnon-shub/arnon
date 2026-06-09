@@ -1,6 +1,6 @@
 # Arnon
 
-Encrypted conversations that leave no trace. No download. No account. No history.
+Encrypted conversations that leave no trace. No account. No app required. No history.
 
 A complete encrypted messenger — app + relay — in a single browser file plus a small Node relay. The whole thing is about 600 lines, small enough to read and audit yourself.
 
@@ -19,7 +19,7 @@ A complete encrypted messenger — app + relay — in a single browser file plus
 - **Text + voice notes** (30s max) — no photos, videos, or file sharing, by design
 - **Self-destruct timer** — 5min / 15min / 30min / 1hr; destroys the whole room on both sides
 - **No account** — no phone number, email, or registration
-- **No download** — works in any modern browser
+- **No app required** — works in any modern browser
 - **Close tab = destroyed** — keys, messages, identity all gone
 - **Blind relay** — sees only encrypted blobs in memory; nothing written to disk
 - **Relay hardened** — non-root user, per-IP rate limits, per-IP connection cap, global room ceiling, message-rate token bucket, idle timeout, heartbeat, 1 MB message limit, 96-bit room IDs
@@ -42,6 +42,7 @@ arnon/
 ├── index.html              # Landing page (GitHub Pages)
 ├── privacy.html
 ├── accessibility.html
+├── terms.html
 ├── CNAME                   # custom domain for GitHub Pages
 ├── LICENSE                 # AGPL-3.0
 ├── Dockerfile
